@@ -13,8 +13,17 @@ class GameFetchController extends Controller
     public function index()
     {
         // dd(request('tournamentId', false));
+      if( date('d') == 31 || (date('m') == 1 && date('d') > 28)){
+        $date = strtotime('last day of next month');
+      } else {
+        $date = strtotime('+1 months');
+      }
+
+
         $param = [
-            'live' => 'all'
+            'from'=> date("Y-m-d"),
+          'to'=>date('Y-m-d', $date),
+          'season'=>date("Y")
         ];
         if((request('tournamentId', false))){
             $param['league'] = request('tournamentId', false);

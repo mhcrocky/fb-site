@@ -88,7 +88,7 @@
 
                 this.getMatches();
                 this.getSlip();
-                this.getEvents();
+               // this.getEvents();
 
 
             },
