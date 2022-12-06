@@ -193,6 +193,69 @@
         </tr>
     </table>
 </div>
+<div  v-for="(item, index) in fixtures" class="table-parent table-responsive d-sm-block d-none">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th class="text-center">
+                
+            </th>
+            <th class="col-5">
+               <span>
+                   {{item.league.name}} <span>- {{item.league.round}} </span>
+               </span>
+            </th>
+            <td class="col-2">
+                <div class="d-flex justify-content-evenly"></div>
+            </td>
+            <td class="col-2">
+                <div class="d-flex justify-content-evenly"></div>
+            </td>
+            <td class="col-2">
+                <div class="d-flex justify-content-evenly"></div>
+            </td>
+            
+
+            
+            <th class="col-1 text-center"><?php echo app('translator')->get('More'); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="text-center">
+            </td>
+            <td>
+                <p>
+                    <span>
+                        <img :src="item.teams.home.logo" alt="..">
+                        {{ item.teams.home.name }}
+                    </span>
+                </p>
+                <p>
+                    <span>
+                        <img :src="item.teams.away.logo" alt="..">
+                        {{ item.teams.away.name }}
+                    </span>
+                </p>
+                <p>
+                    <span class="float-end">
+                        <a href="" class="me-2 d-none">
+                            <i class="fal fa-chart-bar"></i>
+                        </a>
+                    </span>
+                </p>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            
+            <td>
+                <button type="button" disabled class="disabled">-</button>
+                
+            </td>
+        </tr>
+    </table>
+</div>
 
 <div class="live-matches d-sm-none" v-if="showType == 'live'">
     <h5><?php echo app('translator')->get('Live Matches'); ?></h5>

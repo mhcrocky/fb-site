@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
         'x-rapidapi-key' => 'ffb34956934ed4e7b7061f74afa17034'
     ])->get('https://v3.football.api-sports.io/leagues', [
         'season' => '2022',
+        'type' =>'cup',
     ]);
     $leagues = json_decode($response->body())->response;
     //end api
@@ -37,10 +38,11 @@ use Illuminate\Support\Facades\Http;
 
             <div class="collapse {{($loop->index == 0) ? 'show' :''}}" id="collapse{{$gameCategory->id}}">
                 <ul class="">
-                    @forelse($gameCategory->activeTournament as $tItem)
+                    @forelse($leagues as $tItem)
                         <li>
-                            <a href="{{route('tournament',[slug($tItem->name) , $tItem->id ])}}" class="sidebar-link {{( Request::routeIs('tournament') && $last == $tItem->id) ? 'active' : '' }}">
-                                <i class="far fa-hand-point-right"></i> {{$tItem->name}}</a>
+                            <a class="sidebar-link">
+                                {{-- <a href="{{route('tournament',[slug($tItem->name) , $tItem->id ])}}" class="sidebar-link {{( Request::routeIs('tournament') && $last == $tItem->id) ? 'active' : '' }}"> --}}
+                                <i class="far fa-hand-point-right"></i> {{$tItem->league->name}}</a>
                         </li>
                     @empty
                     @endforelse

@@ -6,11 +6,19 @@ use App\Models\GameMatch;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class GameFetchController extends Controller
 {
     public function index()
     {
+        $response = Http::withHeaders([
+            'x-rapidapi-host' => 'v3.football.api-sports.io',
+            'x-rapidapi-key' => 'ffb34956934ed4e7b7061f74afa17034'
+        ])->get('https://v3.football.api-sports.io/fixtures', [
+            'live' => 'all'
+        ]);
+        $fixtures = json_decode($response->body())->response;
         $now = Carbon::now();
 
         $query = GameMatch::query();
@@ -26,8 +34,8 @@ class GameFetchController extends Controller
                 $q->where('id', $matchId);
             })
 
-//            ->where('start_date', '<=', $now)
-//            ->where('end_date', '>', $now)
+            // ->where('start_date', '<=', $now)
+            // ->where('end_date', '>', $now)
             ->whereHas('gameTeam1')
             ->whereHas('gameTeam2')
             ->whereHas('gameTournament', function ($query) {
@@ -118,13 +126,9 @@ class GameFetchController extends Controller
         $list = $matches->where('start_date', '<=', $now)->where('end_date', '>', $now);
         $upcoming = $matches->where('start_date', '>', $now)->where('end_date', '>', $now)->values();
 
-
-
-
-
-
-
+        // dd($fixtures,$list,$upcoming);
         return response([
+            'fixtures'=>$fixtures,
             'liveList' => $list,
             'upcomingList' => $upcoming,
         ], 200);

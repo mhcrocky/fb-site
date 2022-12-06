@@ -67,7 +67,7 @@
                 minimum_bet: "<?php echo e(config('basic.minimum_bet')); ?>",
                 allSports_filter: [],
                 upcoming_filter: [],
-
+                fixtures:[],
                 selectedData: {},
                 betSlip: [],
                 totalOdds: 0,
@@ -112,11 +112,13 @@
                         $url = '<?php echo e(route('allSports')); ?>?matchId=' + $lastSegment;
                     }
 
-
+                    console.log($url,'dddddd');
                     await axios.get($url)
                         .then(function (response) {
                             _this.allSports_filter = response.data.liveList;
                             _this.upcoming_filter = response.data.upcomingList;
+                            _this.fixtures = response.data.fixtures;
+
                         })
                         .catch(function (error) {
                             console.log(error);

@@ -1,6 +1,18 @@
 <?php
+use Illuminate\Support\Facades\Http;
+
     $segments = request()->segments();
     $last  = end($segments);
+    ///api call
+    $response = Http::withHeaders([
+        'x-rapidapi-host' => 'v3.football.api-sports.io',
+        'x-rapidapi-key' => 'ffb34956934ed4e7b7061f74afa17034'
+    ])->get('https://v3.football.api-sports.io/leagues', [
+        'season' => '2022',
+        'type' =>'cup',
+    ]);
+    $leagues = json_decode($response->body())->response;
+    //end api
 ?>
 
 <ul class="main">
@@ -27,12 +39,10 @@
 
             <div class="collapse <?php echo e(($loop->index == 0) ? 'show' :''); ?>" id="collapse<?php echo e($gameCategory->id); ?>">
                 <ul class="">
-                    <?php $__empty_2 = true; $__currentLoopData = $league; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+                    <?php $__empty_2 = true; $__currentLoopData = $leagues; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
                         <li>
-                            
-                            <a
+                            <a class="sidebar-link">
                                 
-                                class="sidebar-link ">
                                 <i class="far fa-hand-point-right"></i> <?php echo e($tItem->league->name); ?></a>
                         </li>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
