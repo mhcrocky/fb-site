@@ -50,10 +50,9 @@
 
 <?php $__env->startPush('script'); ?>
 
-    <?php
+<?php
         $segments = request()->segments();
         $last  = end($segments);
-
     ?>
 
     <script>

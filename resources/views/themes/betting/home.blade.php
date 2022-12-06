@@ -51,10 +51,9 @@
 
 @push('script')
 
-    @php
+@php
         $segments = request()->segments();
         $last  = end($segments);
-
     @endphp
 
     <script>

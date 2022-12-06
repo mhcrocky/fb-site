@@ -12,13 +12,19 @@ class GameFetchController extends Controller
 {
     public function index()
     {
+        // dd(request('tournamentId', false));
+        $param = [
+            'live' => 'all'
+        ];
+        if((request('tournamentId', false))){
+            $param['league'] = request('tournamentId', false);
+        }
         $response = Http::withHeaders([
             'x-rapidapi-host' => 'v3.football.api-sports.io',
             'x-rapidapi-key' => 'ffb34956934ed4e7b7061f74afa17034'
-        ])->get('https://v3.football.api-sports.io/fixtures', [
-            'live' => 'all'
-        ]);
+        ])->get('https://v3.football.api-sports.io/fixtures',$param);
         $fixtures = json_decode($response->body())->response;
+        // dd($fixtures);
         $now = Carbon::now();
 
         $query = GameMatch::query();

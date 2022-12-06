@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Http;
     ])->get('https://v3.football.api-sports.io/leagues', [
         'season' => '2022',
         'type' =>'cup',
+        'current'=>"true",
+        'country'=>'World'
     ]);
     $leagues = json_decode($response->body())->response;
     //end api
@@ -32,7 +34,7 @@ use Illuminate\Support\Facades\Http;
                 aria-expanded="true"
                 aria-controls="collapseExample">
                 {!! $gameCategory->icon!!}{{$gameCategory->name}}
-                <span class="count"><span class="font-italic">({{$gameCategory->game_active_match_count}})</span></span>
+                <span class="count"><span class="font-italic">({{count($leagues)}})</span></span>
             </a>
             <!-- dropdown item -->
 
@@ -40,7 +42,7 @@ use Illuminate\Support\Facades\Http;
                 <ul class="">
                     @forelse($leagues as $tItem)
                         <li>
-                            <a class="sidebar-link">
+                            <a  href="{{route('tournament',[$tItem->league->id ])}}" class="sidebar-link">
                                 {{-- <a href="{{route('tournament',[slug($tItem->name) , $tItem->id ])}}" class="sidebar-link {{( Request::routeIs('tournament') && $last == $tItem->id) ? 'active' : '' }}"> --}}
                                 <i class="far fa-hand-point-right"></i> {{$tItem->league->name}}</a>
                         </li>

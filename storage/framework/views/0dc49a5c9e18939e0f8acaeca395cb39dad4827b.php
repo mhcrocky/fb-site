@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Http;
     ])->get('https://v3.football.api-sports.io/leagues', [
         'season' => '2022',
         'type' =>'cup',
+        'current'=>"true",
+        'country'=>'World'
     ]);
     $leagues = json_decode($response->body())->response;
     //end api
@@ -33,7 +35,7 @@ use Illuminate\Support\Facades\Http;
                 aria-controls="collapseExample">
                 <?php echo $gameCategory->icon; ?><?php echo e($gameCategory->name); ?>
 
-                <span class="count"><span class="font-italic">(<?php echo e($gameCategory->game_active_match_count); ?>)</span></span>
+                <span class="count"><span class="font-italic">(<?php echo e(count($leagues)); ?>)</span></span>
             </a>
             <!-- dropdown item -->
 
@@ -41,7 +43,7 @@ use Illuminate\Support\Facades\Http;
                 <ul class="">
                     <?php $__empty_2 = true; $__currentLoopData = $leagues; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tItem): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
                         <li>
-                            <a class="sidebar-link">
+                            <a  href="<?php echo e(route('tournament',[$tItem->league->id ])); ?>" class="sidebar-link">
                                 
                                 <i class="far fa-hand-point-right"></i> <?php echo e($tItem->league->name); ?></a>
                         </li>

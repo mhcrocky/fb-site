@@ -61,9 +61,10 @@ class FrontendController extends Controller
     }
 
 
-    public function tournament($slug = null, $id)
+    public function tournament($id)
     {
         $contentSection = ['slider'];
+        $data['id'] = $id;
         $data['contentDetails'] = ContentDetails::select('id', 'content_id', 'description', 'created_at')
             ->whereHas('content', function ($query) use ($contentSection) {
                 return $query->whereIn('name', $contentSection);
