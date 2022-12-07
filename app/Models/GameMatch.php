@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class GameMatch extends Model
 {
     use HasFactory;
+    public $fillable  = ['id','category_id','tournament_id','team1_id','team2_id','status','start_date','end_date'];
     public function gameCategory()
     {
         return $this->belongsTo(GameCategory::class,'category_id');

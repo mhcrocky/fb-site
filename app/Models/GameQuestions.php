@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class GameQuestions extends Model
 {
     use HasFactory;
+    public $fillable = ['id','match_id','name','creator_id','status','end_time'];
     public function gameOptions()
     {
         return $this->hasMany(GameOption::class,'question_id');

@@ -7,7 +7,7 @@ use App\Http\Traits\Notify;
 use App\Models\BetInvest;
 use App\Models\GameMatch;
 use App\Models\GameQuestions;
-use App\Models\Settings;
+use App\Models\GameTournament;
 use Illuminate\Console\Command;
 use Carbon\Carbon;
 use Facades\App\Services\BasicService;
@@ -75,16 +75,21 @@ class Cron extends Command
                 'season'=>date("Y"),
                 'league' => $item->league->id
             ]);
-            echo '->';
             $fixtures = json_decode($response->body())->response;
             if(count($fixtures)){
                 array_push($list,$item);
             }
         }
-        Settings::create([
-            'key'=>'leagues',
-            'value'=> json_encode($list)
-        ]);
+        foreach ($list as $item) {
+            GameTournament::updateOrCreate([
+                'id'=>$item->league->id,
+            ],[
+                'id'=>$item->league->id,
+                'name'=>$item->league->name,
+                'category_id'=>'1',
+                'status'=>1
+            ]);
+        }
         ///end save league data
         $now = Carbon::now();
         $basic = (object)config('basic');

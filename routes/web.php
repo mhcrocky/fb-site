@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Artisan;
 
+Route::get('test', 'Admin\TournamentController@test');
+
 Route::get('/themeMode/{themeType?}', function ($themeType = 'true') {
     session()->put('dark-mode', $themeType);
     return $themeType;

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class GameOption extends Model
 {
     use HasFactory;
-
+    public $fillable = ['match_id','question_id','status','ratio','option_name','creator_id'];
     public function gameMatch()
     {
         return $this->belongsTo(GameMatch::class,'match_id');
