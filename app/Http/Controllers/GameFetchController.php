@@ -30,10 +30,10 @@ class GameFetchController extends Controller
         }
         $response = Http::withHeaders([
             'x-rapidapi-host' => 'v3.football.api-sports.io',
-            'x-rapidapi-key' => 'ffb34956934ed4e7b7061f74afa17034'
+            'x-rapidapi-key' => env('FOOTBALL_API_KEY')
         ])->get('https://v3.football.api-sports.io/fixtures',$param);
         $fixtures = json_decode($response->body())->response;
-        // dd($fixtures);
+        dd($fixtures,$param);
         $now = Carbon::now();
 
         $query = GameMatch::query();

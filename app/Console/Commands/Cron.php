@@ -49,7 +49,7 @@ class Cron extends Command
         ///save league data
         $response = Http::withHeaders([
             'x-rapidapi-host' => 'v3.football.api-sports.io',
-            'x-rapidapi-key' => 'ffb34956934ed4e7b7061f74afa17034'
+            'x-rapidapi-key' => env('FOOTBALL_API_KEY')
         ])->get('https://v3.football.api-sports.io/leagues');
         $leagues = json_decode($response->body())->response;
         $list = [];
@@ -68,7 +68,7 @@ class Cron extends Command
         foreach ($leagues as $item) {
             $response = Http::withHeaders([
                 'x-rapidapi-host' => 'v3.football.api-sports.io',
-                'x-rapidapi-key' => 'ffb34956934ed4e7b7061f74afa17034'
+                'x-rapidapi-key' => env('FOOTBALL_API_KEY')
             ])->get('https://v3.football.api-sports.io/fixtures',[
                 'from'=> date("Y-m-d"),
                 'to'=>date('Y-m-d', $date),
