@@ -214,22 +214,22 @@
                 },
 
                 getEvents() {
-                    let _this = this;
-                    // Pusher.logToConsole = true;
-                    let pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
-                        encrypted: true,
-                        cluster: "{{ env('PUSHER_APP_CLUSTER') }}"
-                    });
-                    var channel = pusher.subscribe('match-notification');
+                    // let _this = this;
+                    // // Pusher.logToConsole = true;
+                    // let pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
+                    //     encrypted: true,
+                    //     cluster: "{{ env('PUSHER_APP_CLUSTER') }}"
+                    // });
+                    // var channel = pusher.subscribe('match-notification');
 
-                    channel.bind('App\\Events\\MatchNotification', function (data) {
-                        console.log(data)
-                        if (data && data.type == 'Edit') {
-                            _this.updateEventData(data)
-                        } else if (data && data.type != 'Edit') {
-                            _this.enlistedEventData(data)
-                        }
-                    });
+                    // channel.bind('App\\Events\\MatchNotification', function (data) {
+                    //     console.log(data)
+                    //     if (data && data.type == 'Edit') {
+                    //         _this.updateEventData(data)
+                    //     } else if (data && data.type != 'Edit') {
+                    //         _this.enlistedEventData(data)
+                    //     }
+                    // });
 
                 },
                 updateEventData(data) {
