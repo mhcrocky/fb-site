@@ -14,7 +14,6 @@ use App\Models\ContentDetails;
 use Stevebauman\Purify\Facades\Purify;
 use Illuminate\Support\Facades\Validator;
 
-
 class FrontendController extends Controller
 {
     use Notify;
@@ -39,6 +38,7 @@ class FrontendController extends Controller
                     $q->select(['content_id', 'description']);
                 }])
             ->get()->groupBy('content.name');
+
         $data['gameCategories'] = GameCategory::with(['activeTournament'])->withCount('gameActiveMatch')->whereStatus(1)->orderBy('game_active_match_count', 'desc')->get();
 
         return view($this->theme . 'home', $data);
@@ -61,10 +61,9 @@ class FrontendController extends Controller
     }
 
 
-    public function tournament($id)
+    public function tournament($slug = null, $id)
     {
         $contentSection = ['slider'];
-        $data['id'] = $id;
         $data['contentDetails'] = ContentDetails::select('id', 'content_id', 'description', 'created_at')
             ->whereHas('content', function ($query) use ($contentSection) {
                 return $query->whereIn('name', $contentSection);

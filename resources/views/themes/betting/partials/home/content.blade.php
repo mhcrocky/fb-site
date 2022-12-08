@@ -1,57 +1,38 @@
+<!-- live match table -->
+<div v-if="showType == 'live'"  v-for="(item, index) in allSports_filter" class="table-parent table-responsive d-sm-block d-none">
 
-<div  v-for="(item, index) in fixtures" class="table-parent table-responsive d-sm-block d-none">
     <table class="table table-striped">
         <thead>
         <tr>
             <th class="text-center">
-                {{-- <span v-html="item.game_category.icon"></span> --}}
+                <span v-html="item.game_category.icon"></span>
             </th>
             <th class="col-5">
                <span>
-                   @{{item.league.name}} <span>- @{{item.league.round}} </span>
+                   @{{item.game_tournament.name}} <span v-if="item.name">- @{{item.name}} </span>
                </span>
             </th>
-            <td class="col-2">
-                <div class="d-flex justify-content-evenly">
-                    <span>@lang('1')</span>
-                    <span>@lang('x')</span>
-                    <span>@lang('2')</span>
-                </div>
-            </td>
-            <td class="col-2">
-                <div class="d-flex justify-content-evenly">
-                    <span>@lang('1x')</span>
-                    <span>@lang('12')</span>
-                    <span>@lang('2x')</span>
-                </div>
-            </td>
-            <td class="col-2">
-                <div class="d-flex justify-content-evenly">
-                    <span>@lang('1x')</span>
-                    <span>@lang('12')</span>
-                    <span>@lang('2x')</span>
-                </div>
-            </td>
-            {{-- <th v-if="index <= 2" class="col-2" v-for="(question, index) in item.questions">
+
+            <th v-if="index <= 2" class="col-2" v-for="(question, index) in item.questions">
                 <div class="d-flex justify-content-evenly">
                     <span>@lang('1')</span>
                     <span>@{{question.name}}</span>
                     <span>@lang('2')</span>
                 </div>
-            </th> --}}
+            </th>
 
-            {{-- <template v-if="3 > (item.questions).length ">
+            <template v-if="3 > (item.questions).length ">
                 <th class="col-2" v-for="index in (3 - (item.questions).length )"
                     :key="index">
                     <div class="d-flex justify-content-evenly">
-                        <span>@lang('1')</span>
+                        <span>1</span>
                         <span v-if="index == 1">@lang('X')</span>
                         <span v-if="index == 2">@lang('2X')</span>
                         <span v-if="index == 3">@lang('3X')</span>
                         <span>2</span>
                     </div>
                 </th>
-            </template> --}}
+            </template>
             <th class="col-1 text-center">@lang('More')</th>
         </tr>
         </thead>
@@ -62,14 +43,14 @@
             <td>
                 <p>
                     <span>
-                        <img :src="item.teams.home.logo" alt="..">
-                        @{{ item.teams.home.name }}
+                        <img :src="item.team1_img" alt="..">
+                        @{{ item.team1 }}
                     </span>
                 </p>
                 <p>
                     <span>
-                        <img :src="item.teams.away.logo" alt="..">
-                        @{{ item.teams.away.name }}
+                        <img :src="item.team2_img" alt="..">
+                        @{{ item.team2 }}
                     </span>
                 </p>
                 <p>
@@ -80,9 +61,7 @@
                     </span>
                 </p>
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
+
             <td v-if="index <= 2" v-for="(question, index) in item.questions">
                 <div class="d-flex justify-content-evenly w-100">
                     <button type="button" :disabled="option.is_unlock_question == 1 || option.is_unlock_match == 1 "
@@ -110,8 +89,106 @@
                 </td>
             </template>
             <td>
-                <button type="button" disabled class="disabled">-</button>
-                {{-- <button @click="goMatch(item)" type="button" v-else>+@{{ (item.questions).length }}</button> --}}
+                <button type="button" v-if="0 == (item.questions).length" disabled class="disabled">-</button>
+                <button @click="goMatch(item)" type="button" v-else>+@{{ (item.questions).length }}</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<!-- Upcoming match table -->
+<div  v-if="showType == 'upcoming'"  v-for="(item, index) in upcoming_filter" class="table-parent table-responsive d-sm-block d-none">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th class="text-center">
+                <span v-html="item.game_category.icon"></span>
+            </th>
+            <th class="col-5">
+               <span>
+                   @{{item.game_tournament.name}} <span v-if="item.name">- @{{item.name}} </span>
+               </span>
+            </th>
+
+            <th v-if="index <= 2" class="col-2" v-for="(question, index) in item.questions">
+                <div class="d-flex justify-content-evenly">
+                    <span>@lang('1')</span>
+                    <span>@{{question.name}}</span>
+                    <span>@lang('2')</span>
+                </div>
+            </th>
+
+            <template v-if="3 > (item.questions).length ">
+                <th class="col-2" v-for="index in (3 - (item.questions).length )"
+                    :key="index">
+                    <div class="d-flex justify-content-evenly">
+                        <span>@lang('1')</span>
+                        <span v-if="index == 1">@lang('X')</span>
+                        <span v-if="index == 2">@lang('2X')</span>
+                        <span v-if="index == 3">@lang('3X')</span>
+                        <span>2</span>
+                    </div>
+                </th>
+            </template>
+            <th class="col-1 text-center">@lang('More')</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="text-center">
+            </td>
+            <td>
+                <p>
+                    <span>
+                        <img :src="item.team1_img" alt="..">
+                        @{{ item.team1 }}
+                    </span>
+                </p>
+                <p>
+                    <span>
+                        <img :src="item.team2_img" alt="..">
+                        @{{ item.team2 }}
+                    </span>
+                </p>
+                <p>
+                    <span class="float-end">
+                        <a href="" class="me-2 d-none">
+                            <i class="fal fa-chart-bar"></i>
+                        </a>
+                    </span>
+                </p>
+            </td>
+
+            <td v-if="index <= 2" v-for="(question, index) in item.questions">
+                <div class="d-flex justify-content-evenly w-100">
+                    <button type="button" :disabled="option.is_unlock_question == 1 || option.is_unlock_match == 1 "
+                            :class="{ disabled: (option.is_unlock_question == 1 || option.is_unlock_match == 1) }"
+                            v-for="(option, index) in question.options"
+                            :title="option.option_name" @click="addToSlip(option)">
+                        <i v-if="option.is_unlock_question == 1 || option.is_unlock_match == 1"
+                           class="fas fa-lock-alt"></i> @{{ option.ratio}}
+                    </button>
+                </div>
+
+                <div v-if="(question.options).length == 0" class="d-flex justify-content-evenly w-100">
+                    <button type="button" class="disabled downgrade">-</button>
+                    <button type="button" class="disabled downgrade">-</button>
+                </div>
+
+            </td>
+
+            <template v-if="3 > (item.questions).length ">
+                <td v-for="index in (3 - (item.questions).length )" :key="index">
+                    <div class="d-flex justify-content-evenly w-100">
+                        <button type="button" class="disabled downgrade">-</button>
+                        <button type="button" class="disabled downgrade">-</button>
+                    </div>
+                </td>
+            </template>
+            <td>
+                <button type="button" v-if="0 == (item.questions).length" disabled class="disabled">-</button>
+                <button @click="goMatch(item)" type="button" v-else>+@{{ (item.questions).length }}</button>
             </td>
         </tr>
     </table>

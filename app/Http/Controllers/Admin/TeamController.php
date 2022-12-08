@@ -58,7 +58,6 @@ class TeamController extends Controller
                 try {
                     $gameTeam->image = $this->uploadImage($request->image, config('location.team.path'), config('location.team.size'));
                 } catch (\Exception $exp) {
-                    dd($exp);
                     return back()->with('error', 'Image could not be uploaded.');
                 }
             }

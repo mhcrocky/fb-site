@@ -26,6 +26,7 @@ class GameCategory extends Model
     {
         return $this->hasMany(GameMatch::class,'category_id')->where('status',1);
     }
+
     public function activeTournament()
     {
         return $this->hasMany(GameTournament::class,'category_id')->where('status',1);

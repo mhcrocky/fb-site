@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Artisan;
 
-Route::get('test', 'Admin\TournamentController@test');
-
 Route::get('/themeMode/{themeType?}', function ($themeType = 'true') {
     session()->put('dark-mode', $themeType);
     return $themeType;
@@ -403,7 +401,7 @@ Route::get('/blog', 'FrontendController@blog')->name('blog');
 
 Route::get('/', 'FrontendController@index')->name('home');
 Route::get('/category/{category_slug}/{category_id}', 'FrontendController@category')->name('category');
-Route::get('/tournament/{tournament_id}', 'FrontendController@tournament')->name('tournament');
+Route::get('/tournament/{tournament_name}/{tournament_id}', 'FrontendController@tournament')->name('tournament');
 Route::get('/match/{match_name}/{match_id}', 'FrontendController@match')->name('match');
 Route::get('/about', 'FrontendController@about')->name('about');
 Route::get('/faq', 'FrontendController@faq')->name('faq');

@@ -6,6 +6,7 @@ use App\Models\GameMatch;
 use App\Models\GameTeam;
 use App\Models\GameOption;
 use App\Models\GameQuestions;
+use App\Models\GameTournament;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -16,98 +17,105 @@ class GameFetchController extends Controller
     public function index()
     {
         //GET DATA FROM API AND STORE TO DB
-        if( date('d') == 31 || (date('m') == 1 && date('d') > 28)){
-            $date = strtotime('last day of next month');
-        } else {
-            $date = strtotime('+1 months');
-        }
-        $param = [
-            'from'=> date("Y-m-d"),
-          'to'=>date('Y-m-d', $date),
-          'season'=>date("Y")
-        ];
-        if((request('tournamentId', false))){
-            $param['league'] = request('tournamentId', false);
-        }
-        $response = Http::withHeaders([
-            'x-rapidapi-host' => 'v3.football.api-sports.io',
-            'x-rapidapi-key' => env('FOOTBALL_API_KEY')
-        ])->get('https://v3.football.api-sports.io/fixtures',$param);
+        // if((request('tournamentId', false))){
 
-        $fixtures = json_decode($response->body())->response;
-        foreach ($fixtures as $fixture) {
-            GameTeam::updateOrCreate([
-                'id'=>$fixture->teams->home->id,
-            ],[
-                'id'=>$fixture->teams->home->id,
-                'name'=>$fixture->teams->home->name,
-                'image'=>$fixture->teams->home->logo,
-                'category_id'=>'1',
-                'status'=>1
-            ]);
-            GameTeam::updateOrCreate([
-                'id'=>$fixture->teams->away->id,
-            ],[
-                'id'=>$fixture->teams->away->id,
-                'name'=>$fixture->teams->away->name,
-                'image'=>$fixture->teams->away->logo,
-                'category_id'=>'1',
-                'status'=>1
-            ]);
-            // dd($fixture);
+        //     if( date('d') == 31 || (date('m') == 1 && date('d') > 28)){
+        //         $date = strtotime('last day of next month');
+        //     } else {
+        //         $date = strtotime('+1 months');
+        //     }
+        //     $param = [
+        //         'from'=> date("Y-m-d"),
+        //         'to'=>date('Y-m-d', $date),
+        //         'season'=>date("Y")
+        //     ];
+        //     $param['league'] = request('tournamentId', false);
 
-            GameMatch::updateOrCreate([
-                'id'=>$fixture->fixture->id,
-            ],[
-                'id'=>$fixture->fixture->id,
-                'team1_id'=>$fixture->teams->home->id,
-                'team2_id'=>$fixture->teams->away->id,
-                'start_date'=>date($fixture->fixture->date),
-                'end_date'=>date($fixture->fixture->date),
-                'category_id'=>'1',
-                'tournament_id'=>$fixture->league->id,
-                'status'=>1,
-                'is_unlock'=>1
-            ]);
-            $odds = Http::withHeaders([
-                'x-rapidapi-host' => 'v3.football.api-sports.io',
-                'x-rapidapi-key' => env('FOOTBALL_API_KEY')
-            ])->get('https://v3.football.api-sports.io/odds',[
-                'fixture'=>$fixture->fixture->id,
-                'bookmaker'=>8
-            ]);
-            $odd = json_decode($odds->body())->response;
+        //     $response = Http::withHeaders([
+        //         'x-rapidapi-host' => 'v3.football.api-sports.io',
+        //         'x-rapidapi-key' => env('FOOTBALL_API_KEY')
+        //     ])->get('https://v3.football.api-sports.io/fixtures',$param);
 
-            $bets = $odd[0]->bookmakers[0]->bets;
-            foreach ($bets as $bet) {
-                $question = GameQuestions::updateOrCreate([
-                    'match_id'=>$fixture->fixture->id,
-                    'name'=>$bet->name
-                ],[
-                    'match_id'=>$fixture->fixture->id,
-                    'creator_id'=>'1',
-                    'name'=>$bet->name,
-                    'status'=>'1',
-                    'end_time'=>date($fixture->fixture->date)
-                ]);
+        //     $fixtures = json_decode($response->body())->response;
+        //     foreach ($fixtures as $fixture) {
+        //         GameTeam::updateOrCreate([
+        //             'id'=>$fixture->teams->home->id,
+        //         ],[
+        //             'id'=>$fixture->teams->home->id,
+        //             'name'=>$fixture->teams->home->name,
+        //             'image'=>$fixture->teams->home->logo,
+        //             'category_id'=>'1',
+        //             'status'=>1
+        //         ]);
+        //         GameTeam::updateOrCreate([
+        //             'id'=>$fixture->teams->away->id,
+        //         ],[
+        //             'id'=>$fixture->teams->away->id,
+        //             'name'=>$fixture->teams->away->name,
+        //             'image'=>$fixture->teams->away->logo,
+        //             'category_id'=>'1',
+        //             'status'=>1
+        //         ]);
+        //         // dd($fixture);
 
-                foreach ($bet->values as $value) {
-                    GameOption::updateOrCreate([
-                        'match_id'=>$fixture->fixture->id,
-                        'question_id'=>$question->id,
-                        'option_name'=>$value->value
-                    ],[
-                        'match_id'=>$fixture->fixture->id,
-                        'question_id'=>$question->id,
-                        'option_name'=>$value->value,
-                        'creator_id'=>'1',
-                        'ratio'=>$value->odd,
-                        'status'=>1
-                    ]);
-                }
-                // dd($bet->values);
-            }
-        }
+        //         GameMatch::updateOrCreate([
+        //             'id'=>$fixture->fixture->id,
+        //         ],[
+        //             'id'=>$fixture->fixture->id,
+        //             'team1_id'=>$fixture->teams->home->id,
+        //             'team2_id'=>$fixture->teams->away->id,
+        //             'start_date'=>date($fixture->fixture->date),
+        //             'end_date'=>date($fixture->fixture->date),
+        //             'category_id'=>'1',
+        //             'tournament_id'=>$fixture->league->id,
+        //             'status'=>1,
+        //             'is_unlock'=>1
+        //         ]);
+        //         $odds = Http::withHeaders([
+        //             'x-rapidapi-host' => 'v3.football.api-sports.io',
+        //             'x-rapidapi-key' => env('FOOTBALL_API_KEY')
+        //         ])->get('https://v3.football.api-sports.io/odds',[
+        //             'fixture'=>$fixture->fixture->id,
+        //             'bookmaker'=>8
+        //         ]);
+        //         // dd($odds->body());
+        //         $odd = json_decode($odds->body())->response;
+        //         if(count($odd)){
+        //             $bets = $odd[0]->bookmakers[0]->bets;
+
+        //             foreach ($bets as $bet) {
+        //                 if(in_array($bet->id,[1,2,3,27,8,11,12,13,13,14,15,32])){
+        //                     $question = GameQuestions::updateOrCreate([
+        //                         'match_id'=>$fixture->fixture->id,
+        //                         'name'=>$bet->name
+        //                     ],[
+        //                         'match_id'=>$fixture->fixture->id,
+        //                         'creator_id'=>'1',
+        //                         'name'=>$bet->name,
+        //                         'status'=>'1',
+        //                         'end_time'=>date($fixture->fixture->date)
+        //                     ]);
+
+        //                     foreach ($bet->values as $value) {
+        //                         GameOption::updateOrCreate([
+        //                             'match_id'=>$fixture->fixture->id,
+        //                             'question_id'=>$question->id,
+        //                             'option_name'=>$value->value
+        //                         ],[
+        //                             'match_id'=>$fixture->fixture->id,
+        //                             'question_id'=>$question->id,
+        //                             'option_name'=>$value->value,
+        //                             'creator_id'=>'1',
+        //                             'ratio'=>$value->odd,
+        //                             'status'=>1
+        //                         ]);
+        //                     }
+        //                 }
+        //                 // dd($bet->values);
+        //             }
+        //         }
+        //     }
+        // }
         //END GET DATA FROM API AND STORE TO DB
         $now = Carbon::now();
 
@@ -115,10 +123,10 @@ class GameFetchController extends Controller
 
         $matches = $query->where('status', 1)
             ->when(request('categoryId', false), function ($q, $categoryId) {
-                $q->where('category_id', '1');
+                $q->where('category_id', $categoryId);
             })
             ->when(request('tournamentId', false), function ($q, $tournamentId) {
-                $q->where('tournament_id', '1');
+                $q->where('tournament_id', $tournamentId);
             })
             ->when(request('matchId', false), function ($q, $matchId) {
                 $q->where('id', $matchId);
@@ -217,7 +225,6 @@ class GameFetchController extends Controller
         $upcoming = $matches->where('start_date', '>', $now)->where('end_date', '>', $now)->values();
         // dd($fixtures,$list,$upcoming);
         return response([
-            'fixtures'=>$fixtures,
             'liveList' => $list,
             'upcomingList' => $upcoming,
         ], 200);

@@ -47,17 +47,15 @@ class Cron extends Command
     {
 
         ///save league data
+
         $response = Http::withHeaders([
             'x-rapidapi-host' => 'v3.football.api-sports.io',
             'x-rapidapi-key' => env('FOOTBALL_API_KEY')
-        ])->get('https://v3.football.api-sports.io/leagues');
-        $leagues = json_decode($response->body())->response;
-        $list = [];
-        if( date('d') == 31 || (date('m') == 1 && date('d') > 28)){
-            $date = strtotime('last day of next month');
-        } else {
-            $date = strtotime('+1 months');
-        }
+        ])->get('https://v3.football.api-sports.io/leagues', [
+            'season' => '2022',
+            'current'=>"true",
+            'country'=>'World'
+        ]);
         $leagues = json_decode($response->body())->response;
         $list = [];
         if( date('d') == 31 || (date('m') == 1 && date('d') > 28)){
@@ -76,6 +74,7 @@ class Cron extends Command
                 'league' => $item->league->id
             ]);
             $fixtures = json_decode($response->body())->response;
+            // dd($fixtures);
             if(count($fixtures)){
                 array_push($list,$item);
             }
