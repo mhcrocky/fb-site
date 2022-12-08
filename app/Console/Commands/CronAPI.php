@@ -144,7 +144,9 @@ class CronAPI extends Command
                             'status'=>1,
                             'is_unlock'=>1
                         ]);
+                        echo 'save odd data';
                         foreach ($bets as $bet) {
+                            echo $bet->name;
                             if(in_array($bet->id,[1,2,3,27,8,11,12,13,13,14,15,32])){
                                 $question = GameQuestions::updateOrCreate([
                                     'match_id'=>$fixture->fixture->id,
@@ -158,6 +160,7 @@ class CronAPI extends Command
                                 ]);
 
                                 foreach ($bet->values as $value) {
+                                    echo '.';
                                     GameOption::updateOrCreate([
                                         'match_id'=>$fixture->fixture->id,
                                         'question_id'=>$question->id,
@@ -172,6 +175,7 @@ class CronAPI extends Command
                                     ]);
                                 }
                             }
+                            echo "\n";
                             // dd($bet->values);
                         }
                         //end save teams and match and odds
