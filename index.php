@@ -43,6 +43,7 @@ require __DIR__.'/vendor/autoload.php';
 | to this client's browser, allowing them to enjoy our application.
 |
 */
+ini_set('max_execution_time', 3600);
 
 $app = require_once __DIR__.'/bootstrap/app.php';
 

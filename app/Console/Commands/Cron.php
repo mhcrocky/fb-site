@@ -5,8 +5,10 @@ namespace App\Console\Commands;
 use Illuminate\Support\Facades\Http;
 use App\Http\Traits\Notify;
 use App\Models\BetInvest;
-use App\Models\GameMatch;
+use App\Models\GameOption;
 use App\Models\GameQuestions;
+use App\Models\GameTeam;
+use App\Models\GameMatch;
 use App\Models\GameTournament;
 use Illuminate\Console\Command;
 use Carbon\Carbon;
@@ -45,51 +47,6 @@ class Cron extends Command
      */
     public function handle()
     {
-
-        ///save league data
-
-        $response = Http::withHeaders([
-            'x-rapidapi-host' => 'v3.football.api-sports.io',
-            'x-rapidapi-key' => env('FOOTBALL_API_KEY')
-        ])->get('https://v3.football.api-sports.io/leagues', [
-            'season' => '2022',
-            'current'=>"true",
-            'country'=>'World'
-        ]);
-        $leagues = json_decode($response->body())->response;
-        $list = [];
-        if( date('d') == 31 || (date('m') == 1 && date('d') > 28)){
-            $date = strtotime('last day of next month');
-        } else {
-            $date = strtotime('+1 months');
-        }
-        foreach ($leagues as $item) {
-            $response = Http::withHeaders([
-                'x-rapidapi-host' => 'v3.football.api-sports.io',
-                'x-rapidapi-key' => env('FOOTBALL_API_KEY')
-            ])->get('https://v3.football.api-sports.io/fixtures',[
-                'from'=> date("Y-m-d"),
-                'to'=>date('Y-m-d', $date),
-                'season'=>date("Y"),
-                'league' => $item->league->id
-            ]);
-            $fixtures = json_decode($response->body())->response;
-            // dd($fixtures);
-            if(count($fixtures)){
-                array_push($list,$item);
-            }
-        }
-        foreach ($list as $item) {
-            GameTournament::updateOrCreate([
-                'id'=>$item->league->id,
-            ],[
-                'id'=>$item->league->id,
-                'name'=>$item->league->name,
-                'category_id'=>'1',
-                'status'=>1
-            ]);
-        }
-        ///end save league data
         $now = Carbon::now();
         $basic = (object)config('basic');
         BetInvest::where('status', 0)
