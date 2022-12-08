@@ -80,7 +80,7 @@ class CronAPI extends Command
             $fixtures = json_decode($response->body())->response;
             echo $item->league->name;
             if(count($fixtures)){
-                echo '--->has fixture data\n';
+                echo "--->has fixture data\n";
                 //match has created marker
                 $is_created_match = false;
 
