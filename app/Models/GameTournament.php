@@ -17,4 +17,20 @@ class GameTournament extends Model
     {
         return $this->hasMany(GameMatch::class,'tournament_id');
     }
+    public static function updateStatus()
+    {
+        $gts = GameTournament::get();
+        foreach ($gts as $gt) {
+            $is_active = false;
+            // dd($gt->gameMatch);
+            foreach ($gt->gameMatch as $gm) {
+                if($gm->status === 1){
+                    $is_active = true;
+                }
+            }
+            if(!$is_active){
+                GameTournament::find($gt->id)->update(['status'=>2]);
+            }
+        }
+    }
 }

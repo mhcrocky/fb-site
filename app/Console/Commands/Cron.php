@@ -107,6 +107,7 @@ class Cron extends Command
             $item->status = 2;
             $item->save();
         });
+        GameTournament::updateStatus();
 
 
 
