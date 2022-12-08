@@ -129,13 +129,14 @@
                         return 0;
                     }
                     var _this = this;
-                    const index = _this.betSlip.findIndex(object => object.match_id === data.match_id);
+                    const index = _this.betSlip.findIndex(object => object.question_id === data.question_id);
                     if (index === -1) {
                         _this.betSlip.push(data);
                         Notiflix.Notify.Success("Added to Bet slip");
                     } else {
                         var result = _this.betSlip.map(function (obj) {
-                            if (obj.match_id == data.match_id) {
+                            console.log(obj,data.id,'compare');
+                            if (obj.question_id == data.question_id) {
                                 obj = data
                             }
                             return obj

@@ -9,7 +9,7 @@
             </th>
             <th class="col-5">
                <span>
-                   @{{item.game_tournament.name}} <span v-if="item.name">- @{{item.name}} </span>
+                   <b style="padding-right: auto;"> @{{item.game_tournament.name}}</b> <span v-if="item.name">- @{{item.name}} </span>  -   @{{new Date(item.start_date).getFullYear()}}-@{{new Date(item.start_date).getMonth() + 1}}-@{{new Date(item.start_date).getDate()}}
                </span>
             </th>
 
@@ -43,13 +43,13 @@
             <td>
                 <p>
                     <span>
-                        <img :src="item.team1_img" alt="..">
+                        <img style="border-radius: 7px" :src="'https://media.api-sports.io/football/teams/'+item.team1_id+'.png'" alt="..">
                         @{{ item.team1 }}
                     </span>
                 </p>
                 <p>
                     <span>
-                        <img :src="item.team2_img" alt="..">
+                        <img style="border-radius: 7px" :src="'https://media.api-sports.io/football/teams/'+item.team2_id+'.png'" alt="..">
                         @{{ item.team2 }}
                     </span>
                 </p>

@@ -29,7 +29,7 @@
                     @forelse($gameCategory->activeTournament as $tItem)
                         <li>
                             <a href="{{route('tournament',[slug($tItem->name) , $tItem->id ])}}" class="sidebar-link {{( Request::routeIs('tournament') && $last == $tItem->id) ? 'active' : '' }}">
-                                <i class="far fa-hand-point-right"></i> {{$tItem->name}}</a>
+                                <img src="https://media.api-sports.io/football/leagues/{{$tItem->id}}.png" style="width: 2rem; height: 2rem; border-radius: 1rem;" /> {{$tItem->name}}</a>
                         </li>
                     @empty
                     @endforelse
