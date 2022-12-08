@@ -1,5 +1,5 @@
 <!-- rightbar -->
-<div class="rightbar" id="rightbar">
+<div class="rightbar" id="rightbar" style="overflow: auto">
     <div class="my-1 d-lg-none">
         <button
             class="remove-class-btn light btn-custom"
