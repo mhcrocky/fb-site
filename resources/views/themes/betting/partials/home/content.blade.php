@@ -8,10 +8,13 @@
                 <span v-html="item.game_category.icon"></span>
             </th>
             <th class="col-5">
-               <span>
-                   <b style="padding-right: auto;"> @{{item.game_tournament.name}}</b> <span v-if="item.name">- @{{item.name}} </span>  -   @{{item.start_date}}
-               </span>
-            </th>
+                <div style="display: flex;">
+                    <b style="width:100%;">@{{item.game_tournament.name}}</b> <span v-if="item.name">- @{{item.name}} </span>
+                    <span style="width: 200px">
+                        @{{new Date(item.start_date).getDate()}}-@{{new Date(item.start_date).getMonth()+1}}-@{{new Date(item.start_date).getFullYear()}}&nbsp@{{new Date(item.start_date).getHours()}}:@{{new Date(item.start_date).getMinutes()}}
+                    </span>
+                 </div>
+             </th>
 
 
             <th v-if="question.name ==='Match Winner'||question.name ==='Home/Away'||question.name ==='Double Chance'" class="col-2" v-for="(question, index) in item.questions">
