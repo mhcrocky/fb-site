@@ -13,11 +13,24 @@
                </span>
             </th>
 
-            <th v-if="index <= 2" class="col-2" v-for="(question, index) in item.questions">
-                <div class="d-flex justify-content-evenly">
-                    {{-- <span>@lang('1')</span> --}}
+
+            <th v-if="question.name ==='Match Winner'||question.name ==='Home/Away'||question.name ==='Double Chance'" class="col-2" v-for="(question, index) in item.questions">
+                <div class="d-flex justify-content-evenly" >
                     <span>@{{question.name}}</span>
-                    {{-- <span>@lang('2')</span> --}}
+                </div>
+                <div v-if="question.name ==='Match Winner'" class="d-flex justify-content-evenly">
+                    <span>@lang('1')</span>
+                    <span>@lang('X')</span>
+                    <span>@lang('2')</span>
+                </div>
+                <div v-if="question.name ==='Home/Away'" class="d-flex justify-content-evenly">
+                    <span>@lang('Home')</span>
+                    <span>@lang('Away')</span>
+                </div>
+                <div v-if="question.name ==='Double Chance'" class="d-flex justify-content-evenly">
+                    <span>@lang('1X')</span>
+                    <span>@lang('12')</span>
+                    <span>@lang('2X')</span>
                 </div>
             </th>
 
