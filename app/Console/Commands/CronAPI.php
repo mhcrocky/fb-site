@@ -128,7 +128,6 @@ class CronAPI extends Command
                             'status'=>1
                         ]);
                         // dd($fixture);
-                        dd(date( "y-m-d h-m-s",$fixture->fixture->timestamp));
                         GameMatch::updateOrCreate([
                             'id'=>$fixture->fixture->id,
                         ],[
