@@ -136,13 +136,14 @@ class CronAPI extends Command
                             'id'=>$fixture->fixture->id,
                             'team1_id'=>$fixture->teams->home->id,
                             'team2_id'=>$fixture->teams->away->id,
-                            'start_date'=>date($fixture->fixture->date),
-                            'end_date'=>date($fixture->fixture->date),
+                            'start_date'=>date($fixture->fixture->timestamp),
+                            'end_date'=>date($fixture->fixture->timestamp),
                             'category_id'=>'1',
                             'tournament_id'=>$fixture->league->id,
                             'status'=>1,
                             'is_unlock'=>1
                         ]);
+                        dd('ddddddd');
                         echo 'save odd data';
                         foreach ($bets as $bet) {
                             echo $bet->name;
@@ -155,7 +156,7 @@ class CronAPI extends Command
                                     'creator_id'=>'1',
                                     'name'=>$bet->name,
                                     'status'=>'1',
-                                    'end_time'=>date($fixture->fixture->date)
+                                    'end_time'=>date($fixture->fixture->timestamp)
                                 ]);
 
                                 foreach ($bet->values as $value) {
