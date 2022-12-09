@@ -15,9 +15,9 @@
 
             <th v-if="index <= 2" class="col-2" v-for="(question, index) in item.questions">
                 <div class="d-flex justify-content-evenly">
-                    <span>@lang('1')</span>
+                    {{-- <span>@lang('1')</span> --}}
                     <span>@{{question.name}}</span>
-                    <span>@lang('2')</span>
+                    {{-- <span>@lang('2')</span> --}}
                 </div>
             </th>
 
@@ -107,15 +107,15 @@
             </th>
             <th class="col-5">
                <span>
-                   @{{item.game_tournament.name}} <span v-if="item.name">- @{{item.name}} </span>
+                   @{{item.game_tournament.name}} <span v-if="item.name">- @{{item.name}} </span>   -   @{{item.start_date}}
                </span>
             </th>
 
             <th v-if="index <= 2" class="col-2" v-for="(question, index) in item.questions">
                 <div class="d-flex justify-content-evenly">
-                    <span>@lang('1')</span>
+                    {{-- <span>@lang('1')</span> --}}
                     <span>@{{question.name}}</span>
-                    <span>@lang('2')</span>
+                    {{-- <span>@lang('2')</span> --}}
                 </div>
             </th>
 
