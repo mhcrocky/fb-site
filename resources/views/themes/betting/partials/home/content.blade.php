@@ -9,7 +9,7 @@
             </th>
             <th class="col-5">
                <span>
-                   <b style="padding-right: auto;"> @{{item.game_tournament.name}}</b> <span v-if="item.name">- @{{item.name}} </span>  -   @{{new Date(item.start_date).getFullYear()}}-@{{new Date(item.start_date).getMonth() + 1}}-@{{new Date(item.start_date).getDate()}}
+                   <b style="padding-right: auto;"> @{{item.game_tournament.name}}</b> <span v-if="item.name">- @{{item.name}} </span>  -   @{{item.start_date}}
                </span>
             </th>
 
