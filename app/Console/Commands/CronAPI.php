@@ -49,7 +49,6 @@ class CronAPI extends Command
     {
 
         ///save league data
-        echo "start work\n";
         $response = Http::withHeaders([
             'x-rapidapi-host' => 'v3.football.api-sports.io',
             'x-rapidapi-key' => env('FOOTBALL_API_KEY')
@@ -57,6 +56,7 @@ class CronAPI extends Command
             'season' => '2022',
             'current'=>"true",
         ]);
+        echo "Start work-------------------------------->\n";
         $leagues = json_decode($response->body())->response;
         $list = [];
         if( date('d') == 31 || (date('m') == 1 && date('d') > 28)){
@@ -64,7 +64,6 @@ class CronAPI extends Command
         } else {
             $date = strtotime('+1 months');
         }
-        echo "got leagues\n";
         foreach ($leagues as $item) {
             $response = Http::withHeaders([
                 'x-rapidapi-host' => 'v3.football.api-sports.io',
@@ -75,17 +74,17 @@ class CronAPI extends Command
                 'season'=>date("Y"),
                 'league' => $item->league->id
             ]);
+            echo "league name --------------->".$item->league->name;
             // league has odd marker
             $is_odds = false;
             $fixtures = json_decode($response->body())->response;
-            echo $item->league->name;
             if(count($fixtures)){
                 echo "--->has fixture data\n";
                 //match has created marker
                 $is_created_match = false;
 
                 foreach ($fixtures as $fixture) {
-                    echo $fixture->fixture->id;
+                    echo "match name--------------->".$fixture->fixture->id;
                     #check match has odds
                     $odds = Http::withHeaders([
                         'x-rapidapi-host' => 'v3.football.api-sports.io',
@@ -129,15 +128,15 @@ class CronAPI extends Command
                             'status'=>1
                         ]);
                         // dd($fixture);
-
+                        dd(date( "y-m-d h-m-s",$fixture->fixture->timestamp));
                         GameMatch::updateOrCreate([
                             'id'=>$fixture->fixture->id,
                         ],[
                             'id'=>$fixture->fixture->id,
                             'team1_id'=>$fixture->teams->home->id,
                             'team2_id'=>$fixture->teams->away->id,
-                            'start_date'=>date($fixture->fixture->timestamp),
-                            'end_date'=>date($fixture->fixture->timestamp),
+                            'start_date'=>date( "y-m-d h-m-s",$fixture->fixture->timestamp),
+                            'end_date'=>date( "y-m-d h-m-s",$fixture->fixture->timestamp),
                             'category_id'=>'1',
                             'tournament_id'=>$fixture->league->id,
                             'status'=>1,
@@ -155,7 +154,7 @@ class CronAPI extends Command
                                     'creator_id'=>'1',
                                     'name'=>$bet->name,
                                     'status'=>'1',
-                                    'end_time'=>date($fixture->fixture->timestamp)
+                                    'end_time'=>date( "y-m-d h-m-s",$fixture->fixture->timestamp)
                                 ]);
 
                                 foreach ($bet->values as $value) {
