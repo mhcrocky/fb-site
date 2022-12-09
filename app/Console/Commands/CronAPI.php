@@ -143,7 +143,6 @@ class CronAPI extends Command
                             'status'=>1,
                             'is_unlock'=>1
                         ]);
-                        dd('ddddddd');
                         echo 'save odd data';
                         foreach ($bets as $bet) {
                             echo $bet->name;
