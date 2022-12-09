@@ -124,15 +124,15 @@ class CronAPI extends Command
                             'status'=>1
                         ]);
                         // dd($fixture);
-                        echo $item->league->name."---".$fixture->teams->home->name."---".$fixture->teams->away->name."---".date( "y-m-d h-m-s",$fixture->fixture->timestamp)."\n";
+                        echo $item->league->name."---".$fixture->teams->home->name."---".$fixture->teams->away->name."---".date( "Y-m-d H-m-s",$fixture->fixture->timestamp)."\n";
                         GameMatch::updateOrCreate([
                             'id'=>$fixture->fixture->id,
                         ],[
                             'id'=>$fixture->fixture->id,
                             'team1_id'=>$fixture->teams->home->id,
                             'team2_id'=>$fixture->teams->away->id,
-                            'start_date'=>date( "y-m-d h-m-s",$fixture->fixture->timestamp),
-                            'end_date'=>date( "y-m-d h-m-s",$fixture->fixture->timestamp),
+                            'start_date'=>date( "Y-m-d H-m-s",$fixture->fixture->timestamp),
+                            'end_date'=>date( "Y-m-d H-m-s",$fixture->fixture->timestamp),
                             'category_id'=>'1',
                             'tournament_id'=>$fixture->league->id,
                             'status'=>1,
@@ -148,7 +148,7 @@ class CronAPI extends Command
                                     'creator_id'=>'1',
                                     'name'=>$bet->name,
                                     'status'=>'1',
-                                    'end_time'=>date( "y-m-d h-m-s",$fixture->fixture->timestamp)
+                                    'end_time'=>date( "Y-m-d H-m-s",$fixture->fixture->timestamp)
                                 ]);
 
                                 foreach ($bet->values as $value) {
