@@ -56,7 +56,6 @@ class CronAPI extends Command
             'season' => '2022',
             'current'=>"true",
         ]);
-        echo "Start work-------------------------------->\n";
         $leagues = json_decode($response->body())->response;
         $list = [];
         if( date('d') == 31 || (date('m') == 1 && date('d') > 28)){
@@ -74,17 +73,14 @@ class CronAPI extends Command
                 'season'=>date("Y"),
                 'league' => $item->league->id
             ]);
-            echo "league name --------------->".$item->league->name;
             // league has odd marker
             $is_odds = false;
             $fixtures = json_decode($response->body())->response;
             if(count($fixtures)){
-                echo "--->has fixture data\n";
                 //match has created marker
                 $is_created_match = false;
 
                 foreach ($fixtures as $fixture) {
-                    echo "match name--------------->".$fixture->fixture->id;
                     #check match has odds
                     $odds = Http::withHeaders([
                         'x-rapidapi-host' => 'v3.football.api-sports.io',
@@ -95,7 +91,6 @@ class CronAPI extends Command
                     ]);
                     $odddata = json_decode($odds->body())->response;
                     if(count($odddata)){
-                        echo "------->has ODD data\n";
                         ////////////////////////////
                         if(!$is_created_match){
                             GameTournament::updateOrCreate([
@@ -128,6 +123,7 @@ class CronAPI extends Command
                             'status'=>1
                         ]);
                         // dd($fixture);
+                        echo $item->league->name."---".$fixture->teams->home->name."---".$fixture->teams->away->name."---".date( "y-m-d h-m-s",$fixture->fixture->timestamp);
                         GameMatch::updateOrCreate([
                             'id'=>$fixture->fixture->id,
                         ],[
@@ -141,9 +137,7 @@ class CronAPI extends Command
                             'status'=>1,
                             'is_unlock'=>1
                         ]);
-                        echo 'save odd data';
                         foreach ($bets as $bet) {
-                            echo $bet->name;
                             if(in_array($bet->id,[1,2,3,27,8,11,12,13,13,14,15,32])){
                                 $question = GameQuestions::updateOrCreate([
                                     'match_id'=>$fixture->fixture->id,
@@ -157,7 +151,6 @@ class CronAPI extends Command
                                 ]);
 
                                 foreach ($bet->values as $value) {
-                                    echo '.';
                                     GameOption::updateOrCreate([
                                         'match_id'=>$fixture->fixture->id,
                                         'question_id'=>$question->id,
@@ -172,18 +165,15 @@ class CronAPI extends Command
                                     ]);
                                 }
                             }
-                            echo "\n";
                             // dd($bet->values);
                         }
                         //end save teams and match and odds
                     }else{
-                        echo "---------no odd data\n";
                     }
                     // dd($item,$odddata,$fixture);
                 }
             }
             else{
-                echo "---------no fixture data\n";
             }
         }
         foreach ($list as $item) {

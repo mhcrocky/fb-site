@@ -29,7 +29,7 @@ Route::get('queue-work', function () {
 })->name('queue.work');
 
 Route::get('cron', function () {
-    return Illuminate\Support\Facades\Artisan::call('cron:run');
+    return Illuminate\Support\Facades\Artisan::call('cronapi:run');
 })->name('cron');
 
 Auth::routes(['verify' => true]);
