@@ -123,7 +123,7 @@ class CronAPI extends Command
                             'status'=>1
                         ]);
                         // dd($fixture);
-                        echo $item->league->name."---".$fixture->teams->home->name."---".$fixture->teams->away->name."---".date( "y-m-d h-m-s",$fixture->fixture->timestamp);
+                        echo $item->league->name."---".$fixture->teams->home->name."---".$fixture->teams->away->name."---".date( "y-m-d h-m-s",$fixture->fixture->timestamp)."\n";
                         GameMatch::updateOrCreate([
                             'id'=>$fixture->fixture->id,
                         ],[
