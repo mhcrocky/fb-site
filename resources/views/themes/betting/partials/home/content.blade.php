@@ -106,16 +106,31 @@
                 <span v-html="item.game_category.icon"></span>
             </th>
             <th class="col-5">
-               <span>
-                   @{{item.game_tournament.name}} <span v-if="item.name">- @{{item.name}} </span>   -   @{{item.start_date}}
-               </span>
+               <div style="display: flex;">
+                   <b style="width:100%;">@{{item.game_tournament.name}}</b> <span v-if="item.name">- @{{item.name}} </span>
+                   <span style="width: 200px">
+                       @{{new Date(item.start_date).getDate()}}-@{{new Date(item.start_date).getMonth()+1}}-@{{new Date(item.start_date).getFullYear()}}&nbsp@{{new Date(item.start_date).getHours()}}:@{{new Date(item.start_date).getMinutes()}}
+                   </span>
+                </div>
             </th>
 
-            <th v-if="index <= 2" class="col-2" v-for="(question, index) in item.questions">
-                <div class="d-flex justify-content-evenly">
-                    {{-- <span>@lang('1')</span> --}}
+            <th v-if="question.name ==='Match Winner'||question.name ==='Home/Away'||question.name ==='Double Chance'" class="col-2" v-for="(question, index) in item.questions">
+                <div class="d-flex justify-content-evenly" >
                     <span>@{{question.name}}</span>
-                    {{-- <span>@lang('2')</span> --}}
+                </div>
+                <div v-if="question.name ==='Match Winner'" class="d-flex justify-content-evenly">
+                    <span>@lang('1')</span>
+                    <span>@lang('X')</span>
+                    <span>@lang('2')</span>
+                </div>
+                <div v-if="question.name ==='Home/Away'" class="d-flex justify-content-evenly">
+                    <span>@lang('Home')</span>
+                    <span>@lang('Away')</span>
+                </div>
+                <div v-if="question.name ==='Double Chance'" class="d-flex justify-content-evenly">
+                    <span>@lang('1X')</span>
+                    <span>@lang('12')</span>
+                    <span>@lang('2X')</span>
                 </div>
             </th>
 
