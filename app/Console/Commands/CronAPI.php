@@ -124,7 +124,6 @@ class CronAPI extends Command
                             'status'=>1
                         ]);
                         // dd($fixture);
-                        echo $item->league->name."---".$fixture->teams->home->name."---".$fixture->teams->away->name."---".date( "Y-m-d H-m-s",$fixture->fixture->timestamp)."\n";
                         GameMatch::updateOrCreate([
                             'id'=>$fixture->fixture->id,
                         ],[
@@ -138,7 +137,9 @@ class CronAPI extends Command
                             'status'=>1,
                             'is_unlock'=>1
                         ]);
+                        echo $item->league->name."---".date( "Y-m-d H-m-s",$fixture->fixture->timestamp)."-----".$fixture->teams->home->name."---vs---".$fixture->teams->away->name."\n";
                         foreach ($bets as $bet) {
+                            echo ".";
                             if(in_array($bet->id,[1,2,3,27,8,11,12,13,13,14,15,32])){
                                 $question = GameQuestions::updateOrCreate([
                                     'match_id'=>$fixture->fixture->id,
@@ -168,6 +169,7 @@ class CronAPI extends Command
                             }
                             // dd($bet->values);
                         }
+                        echo "\n";
                         //end save teams and match and odds
                     }else{
                     }
