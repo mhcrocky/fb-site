@@ -9,35 +9,16 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th class="text-center col-1">
-                <span v-html="item.game_category.icon"></span>
+            <th class="col-6" colspan="2">
+                <b style="width:100%;">@{{item.game_tournament.name}}</b> <span v-if="item.name">- @{{item.name}} </span>
             </th>
-            <th class="col-5">
-                <div style="display: flex;">
-                    <b style="width:100%;">@{{item.game_tournament.name}}</b> <span v-if="item.name">- @{{item.name}} </span>
-
-                 </div>
-             </th>
 
 
             <th v-if="question.name ==='Match Winner'||question.name ==='Home/Away'||question.name ==='Double Chance'" class="col-2" v-for="(question, index) in item.questions">
                 <div class="d-flex justify-content-evenly" >
                     <span>@{{question.name}}</span>
                 </div>
-                <div v-if="question.name ==='Match Winner'" class="d-flex justify-content-evenly">
-                    <span>@lang('1')</span>
-                    <span>@lang('X')</span>
-                    <span>@lang('2')</span>
-                </div>
-                <div v-if="question.name ==='Home/Away'" class="d-flex justify-content-evenly">
-                    <span>@lang('Home')</span>
-                    <span>@lang('Away')</span>
-                </div>
-                <div v-if="question.name ==='Double Chance'" class="d-flex justify-content-evenly">
-                    <span>@lang('1X')</span>
-                    <span>@lang('12')</span>
-                    <span>@lang('2X')</span>
-                </div>
+
             </th>
 
             <template v-if="3 > (item.questions).length ">
@@ -58,34 +39,51 @@
         </thead>
         <tbody>
         <tr>
-            <td class="text-center">
-                <span style="width: 500px">
-                    <p>@{{new Date(item.start_date).getDate()}}-@{{new Date(item.start_date).getMonth()+1}}-@{{new Date(item.start_date).getFullYear()}}</p>@{{new Date(item.start_date).getHours()}}:@{{new Date(item.start_date).getMinutes()}}
-                </span>
-            </td>
-            <td>
-                <p>
+            <td colspan="2">
+                <div style="display: flex">
                     <span>
-                        <img style="border-radius: 7px" :src="'https://media.api-sports.io/football/teams/'+item.team1_id+'.png'" alt="..">
-                        @{{ item.team1 }}
+                        @{{new Date(item.start_date).getDate()}}-@{{new Date(item.start_date).getMonth()+1}}-@{{new Date(item.start_date).getFullYear()}}<br/>@{{new Date(item.start_date).getHours()}}:@{{new Date(item.start_date).getMinutes()}}
                     </span>
-                </p>
-                <p>
-                    <span>
-                        <img style="border-radius: 7px" :src="'https://media.api-sports.io/football/teams/'+item.team2_id+'.png'" alt="..">
-                        @{{ item.team2 }}
-                    </span>
-                </p>
-                <p>
-                    <span class="float-end">
-                        <a href="" class="me-2 d-none">
-                            <i class="fal fa-chart-bar"></i>
-                        </a>
-                    </span>
-                </p>
+                    <div >
+                        <p style="padding: 0px 0px 5px 5px">
+                            <span>
+                                <img style="border-radius: 7px" :src="'https://media.api-sports.io/football/teams/'+item.team1_id+'.png'" alt="..">
+                                @{{ item.team1 }}
+                            </span>
+                        </p>
+                        <p style="padding: 0px 0px 5px 5px">
+                            <span>
+                                <img style="border-radius: 7px" :src="'https://media.api-sports.io/football/teams/'+item.team2_id+'.png'" alt="..">
+                                @{{ item.team2 }}
+                            </span>
+                        </p>
+                        <p>
+                            <span class="float-end">
+                                <a href="" class="me-2 d-none">
+                                    <i class="fal fa-chart-bar"></i>
+                                </a>
+                            </span>
+                        </p>
+                    </div>
+                </div>
             </td>
 
-            <td v-if="index <= 2" v-for="(question, index) in item.questions">
+
+            <td  v-if="question.name ==='Match Winner'||question.name ==='Home/Away'||question.name ==='Double Chance'" v-for="(question, index) in item.questions" >
+                <div v-if="question.name ==='Match Winner'" class="d-flex justify-content-evenly">
+                    <span>@lang('1')</span>
+                    <span>@lang('X')</span>
+                    <span>@lang('2')</span>
+                </div>
+                <div v-if="question.name ==='Home/Away'" class="d-flex justify-content-evenly">
+                    <span>@lang('Home')</span>
+                    <span>@lang('Away')</span>
+                </div>
+                <div v-if="question.name ==='Double Chance'" class="d-flex justify-content-evenly">
+                    <span>@lang('1X')</span>
+                    <span>@lang('12')</span>
+                    <span>@lang('2X')</span>
+                </div>
                 <div class="d-flex justify-content-evenly w-100">
                     <button type="button" :disabled="option.is_unlock_question == 1 || option.is_unlock_match == 1 "
                             :class="{ disabled: (option.is_unlock_question == 1 || option.is_unlock_match == 1) }"
@@ -103,7 +101,7 @@
 
             </td>
 
-            <template v-if="3 > (item.questions).length ">
+            <template v-if="3 > (item.questions).length "  >
                 <td v-for="index in (3 - (item.questions).length )" :key="index">
                     <div class="d-flex justify-content-evenly w-100">
                         <button type="button" class="disabled downgrade">-</button>
@@ -111,7 +109,7 @@
                     </div>
                 </td>
             </template>
-            <td>
+            <td  style="padding-top: 30px">
                 <button type="button" v-if="0 == (item.questions).length" disabled class="disabled">-</button>
                 <button @click="goMatch(item)" type="button" v-else>+@{{ (item.questions).length }}</button>
             </td>
