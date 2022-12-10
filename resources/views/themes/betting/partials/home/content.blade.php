@@ -4,15 +4,13 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th class="text-center">
+            <th class="text-center col-1">
                 <span v-html="item.game_category.icon"></span>
             </th>
             <th class="col-5">
                 <div style="display: flex;">
                     <b style="width:100%;">@{{item.game_tournament.name}}</b> <span v-if="item.name">- @{{item.name}} </span>
-                    <span style="width: 200px">
-                        @{{new Date(item.start_date).getDate()}}-@{{new Date(item.start_date).getMonth()+1}}-@{{new Date(item.start_date).getFullYear()}}&nbsp@{{new Date(item.start_date).getHours()}}:@{{new Date(item.start_date).getMinutes()}}
-                    </span>
+
                  </div>
              </th>
 
@@ -41,11 +39,12 @@
                 <th class="col-2" v-for="index in (3 - (item.questions).length )"
                     :key="index">
                     <div class="d-flex justify-content-evenly">
-                        <span>1</span>
+                        -
+                        {{-- <span>1</span>
                         <span v-if="index == 1">@lang('X')</span>
                         <span v-if="index == 2">@lang('2X')</span>
                         <span v-if="index == 3">@lang('3X')</span>
-                        <span>2</span>
+                        <span>2</span> --}}
                     </div>
                 </th>
             </template>
@@ -55,6 +54,9 @@
         <tbody>
         <tr>
             <td class="text-center">
+                <span style="width: 500px">
+                    <p>@{{new Date(item.start_date).getDate()}}-@{{new Date(item.start_date).getMonth()+1}}-@{{new Date(item.start_date).getFullYear()}}</p>@{{new Date(item.start_date).getHours()}}:@{{new Date(item.start_date).getMinutes()}}
+                </span>
             </td>
             <td>
                 <p>

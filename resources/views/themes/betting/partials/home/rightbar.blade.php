@@ -118,12 +118,12 @@
         <div class="input-group inc-dec">
             <p class="series d-flex align-items-start">
                 <span style="width: 50%;padding:0.5rem">
-                   Amout
+                   Amount
                 </span>
 
               <input  class="form-control" value="1" style="width: 50%"  v-model="form.amount"
                      @keyup="calc(form.amount)"
-                     type="number"
+                     type="text"
                      data-zeros="true"
                      :max="999999"/>
             </p>

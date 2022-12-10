@@ -11,11 +11,13 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
-
+use Artisan;
 class GameFetchController extends Controller
 {
     public function index()
     {
+        Artisan::call('cron:run');
+
         $now = Carbon::now();
 
         $query = GameMatch::query();
