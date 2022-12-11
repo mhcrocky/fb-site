@@ -55,7 +55,7 @@ class CronAPI extends Command
         ])->get('https://v3.football.api-sports.io/leagues', [
             'season' => '2022',
             'current'=>"true",
-            'country'=>'world'
+            // 'country'=>'world'
         ]);
         $leagues = json_decode($response->body())->response;
         $list = [];
@@ -140,7 +140,7 @@ class CronAPI extends Command
                         echo $item->league->name."---".date( "Y-m-d H-m-s",$fixture->fixture->timestamp)."-----".$fixture->teams->home->name."---vs---".$fixture->teams->away->name."\n";
                         foreach ($bets as $bet) {
                             echo ".";
-                            if(in_array($bet->id,[1,2,3,27,8,11,12,13,13,14,15,32])){
+                            // if(in_array($bet->id,[1,2,3,27,8,11,12,13,13,14,15,32])){
                                 $question = GameQuestions::updateOrCreate([
                                     'match_id'=>$fixture->fixture->id,
                                     'name'=>$bet->name
@@ -166,7 +166,7 @@ class CronAPI extends Command
                                         'status'=>1
                                     ]);
                                 }
-                            }
+                            // }
                             // dd($bet->values);
                         }
                         echo "\n";
