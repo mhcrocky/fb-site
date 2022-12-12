@@ -73,8 +73,8 @@
                     <span>@lang('2')</span>
                 </div>
                 <div v-if="question.name ==='Home/Away'" class="d-flex justify-content-evenly">
-                    <span>@lang('Home')</span>
-                    <span>@lang('Away')</span>
+                    <span>@{{item.team1}}</span>
+                    <span>@{{item.team2}}</span>
                 </div>
                 <div v-if="question.name ==='Double Chance'" class="d-flex justify-content-evenly">
                     <span>@lang('1X')</span>
