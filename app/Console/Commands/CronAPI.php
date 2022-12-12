@@ -47,6 +47,17 @@ class CronAPI extends Command
      */
     public function handle()
     {
+        $this->info('update table status');
+        GameTeam::where('status',1)->update(['status'=>2]);
+        echo ".";
+        GameMatch::where('status',1)->update(['status'=>2]);
+        echo ".";
+        GameOption::where('status',1)->update(['status'=>2]);
+        echo ".";
+        GameQuestions::where('status',1)->update(['status'=>2]);
+        echo ".";
+        GameTournament::where('status',1)->update(['status'=>2]);
+        echo "\n";
         ///save league data
         $response = Http::withHeaders([
             'x-rapidapi-host' => 'v3.football.api-sports.io',
@@ -54,8 +65,8 @@ class CronAPI extends Command
         ])->get('https://v3.football.api-sports.io/leagues', [
             'season' => '2022',
             'current'=>"true",
-            'country'=>'world',
-            'type'=>'cup'
+            // 'country'=>'world',
+            // 'type'=>'cup'
         ]);
         $leagues = json_decode($response->body())->response;
         $list = [];

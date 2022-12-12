@@ -13,7 +13,7 @@
 
     <div class="all-markets-questions" >
         <div class="row " v-for="(item, index) in allSports_filter" v-if="showType == 'live'">
-            <div class="col-lg-6" :key="question.id"  v-for="(question, index) in item.questions">
+            <div class="col-lg-12" :key="question.id"  v-for="(question, index) in item.questions">
                 <div class="accordion mb-2"
                      :id="'accordionExample_' + question.id">
                     <div class="accordion-item">
@@ -25,14 +25,11 @@
                                 :data-bs-target="'#collapse_' + question.id"
                                 aria-expanded="false"
                                 :aria-controls="'collapse_'+ question.id">
-                                <a href="">
-                                    <i class="fal fa-thumbtack"></i>
-                                </a>
                                 @{{ question.name }}
                             </button>
                         </h2>
                         <div   :id="'collapse_'+ question.id"
-                            class="accordion-collapse collapse show"
+                            class="accordion-collapse collapse"
                             :aria-labelledby="'heading_'+ question.id"
                             :data-bs-parent="'accordionExample_'+ question.id">
                             <div class="accordion-body">
@@ -64,7 +61,7 @@
         </div>
 
         <div class="row " v-for="(item, index) in upcoming_filter" v-if="showType == 'upcoming'">
-            <div class="col-lg-6" :key="question.id"  v-for="(question, index) in item.questions">
+            <div class="col-lg-12" :key="question.id"  v-for="(question, index) in item.questions">
                 <div class="accordion mb-2"
                      :id="'accordionExample_' + question.id"
                 >
@@ -77,14 +74,11 @@
                                 :data-bs-target="'#collapse_' + question.id"
                                 aria-expanded="false"
                                 :aria-controls="'collapse_'+ question.id">
-                                <a href="">
-                                    <i class="fal fa-thumbtack"></i>
-                                </a>
                                 @{{ question.name }}
                             </button>
                         </h2>
                         <div   :id="'collapse_'+ question.id"
-                            class="accordion-collapse collapse show"
+                            class="accordion-collapse collapse"
                             :aria-labelledby="'heading_'+ question.id"
                             :data-bs-parent="'accordionExample_'+ question.id">
                             <div class="accordion-body">
