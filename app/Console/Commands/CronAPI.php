@@ -66,8 +66,8 @@ class CronAPI extends Command
         ])->get('https://v3.football.api-sports.io/leagues', [
             'season' => '2022',
             'current'=>"true",
-            'country'=>'world',
-            'type'=>'cup'
+            // 'country'=>'world',
+            // 'type'=>'cup'
         ]);
         $leagues = json_decode($response->body())->response;
         $list = [];
