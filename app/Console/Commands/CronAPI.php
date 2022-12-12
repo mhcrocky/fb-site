@@ -47,7 +47,8 @@ class CronAPI extends Command
      */
     public function handle()
     {
-        $this->info('update table status');
+        $start_time = Carbon::now();
+
         GameTeam::where('status',1)->update(['status'=>2]);
         echo ".";
         GameMatch::where('status',1)->update(['status'=>2]);
@@ -65,8 +66,8 @@ class CronAPI extends Command
         ])->get('https://v3.football.api-sports.io/leagues', [
             'season' => '2022',
             'current'=>"true",
-            // 'country'=>'world',
-            // 'type'=>'cup'
+            'country'=>'world',
+            'type'=>'cup'
         ]);
         $leagues = json_decode($response->body())->response;
         $list = [];
@@ -150,7 +151,6 @@ class CronAPI extends Command
                         ]);
                         $this->info($item->league->name."---".date( "Y-m-d H-m-s",$fixture->fixture->timestamp)."-----".$fixture->teams->home->name."---vs---".$fixture->teams->away->name);
                         foreach ($bets as $bet) {
-                            echo ".";
                             // if(in_array($bet->id,[1,2,3,27,8,11,12,13,13,14,15,32])){
                                 $question = GameQuestions::updateOrCreate([
                                     'match_id'=>$fixture->fixture->id,
@@ -164,6 +164,7 @@ class CronAPI extends Command
                                 ]);
 
                                 foreach ($bet->values as $value) {
+                                    echo ".";
                                     GameOption::updateOrCreate([
                                         'match_id'=>$fixture->fixture->id,
                                         'question_id'=>$question->id,
@@ -194,8 +195,11 @@ class CronAPI extends Command
         foreach ($list as $item) {
         }
         ///end save league data
-
-        $this->info('status');
+        $end_time = Carbon::now();
+        $start_time->diff($end_time)->format('%H:%I:%S');
+        $this->info('Started at=========>'.$start_time);
+        $this->info('Ended at===========>'.$end_time);
+        $this->info("Duration====>".$start_time->diff($end_time)->format('%H:%I:%S'));
     }
 
 }
