@@ -47,7 +47,6 @@ class CronAPI extends Command
      */
     public function handle()
     {
-
         ///save league data
         $response = Http::withHeaders([
             'x-rapidapi-host' => 'v3.football.api-sports.io',
@@ -55,7 +54,8 @@ class CronAPI extends Command
         ])->get('https://v3.football.api-sports.io/leagues', [
             'season' => '2022',
             'current'=>"true",
-            // 'country'=>'world'
+            'country'=>'world',
+            'type'=>'cup'
         ]);
         $leagues = json_decode($response->body())->response;
         $list = [];
@@ -137,7 +137,7 @@ class CronAPI extends Command
                             'status'=>1,
                             'is_unlock'=>1
                         ]);
-                        echo $item->league->name."---".date( "Y-m-d H-m-s",$fixture->fixture->timestamp)."-----".$fixture->teams->home->name."---vs---".$fixture->teams->away->name."\n";
+                        $this->info($item->league->name."---".date( "Y-m-d H-m-s",$fixture->fixture->timestamp)."-----".$fixture->teams->home->name."---vs---".$fixture->teams->away->name);
                         foreach ($bets as $bet) {
                             echo ".";
                             // if(in_array($bet->id,[1,2,3,27,8,11,12,13,13,14,15,32])){
@@ -172,6 +172,7 @@ class CronAPI extends Command
                         echo "\n";
                         //end save teams and match and odds
                     }else{
+                        $this->comment($item->league->name."---".$item->league->id."---".date( "Y-m-d H-m-s",$fixture->fixture->timestamp)."---".$fixture->fixture->id."---".$fixture->teams->home->name."---vs---".$fixture->teams->away->name);
                     }
                     // dd($item,$odddata,$fixture);
                 }
